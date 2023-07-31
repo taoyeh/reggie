@@ -14,7 +14,6 @@ vue + springboot + mybatis plus + redis + mysql
 
 加入购物车之后来到结算页面，可以增删改地址，点击支付完成订单。
 
-![数据库](https://gitee.com/tao_yihao/picture-address/raw/master/image.png "屏幕截图")
 ![前端登录](https://foruda.gitee.com/images/1690801769317205091/419a5321_7521115.png "屏幕截图")
 ![前端商品展示](https://foruda.gitee.com/images/1690801731794883714/6aaa94b9_7521115.png "屏幕截图")
 ![设置菜品](https://foruda.gitee.com/images/1690804090633064830/a1a5ccdd_7521115.png "屏幕截图")
