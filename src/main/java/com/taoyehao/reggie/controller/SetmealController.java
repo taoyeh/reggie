@@ -5,16 +5,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.taoyehao.reggie.common.R;
 import com.taoyehao.reggie.dto.SetmealDto;
 import com.taoyehao.reggie.entity.Category;
-import com.taoyehao.reggie.entity.Dish;
 import com.taoyehao.reggie.entity.Setmeal;
 import com.taoyehao.reggie.service.CategoryService;
 import com.taoyehao.reggie.service.SetmealDishService;
 import com.taoyehao.reggie.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -70,6 +70,7 @@ public class SetmealController {
      * @return
      */
     @PostMapping
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> saveWithSetmealDish(@RequestBody  SetmealDto setmealDto){
         setmealService.saveWithSetmealDish(setmealDto);
         return R.success("新增套餐成功!");
@@ -81,7 +82,7 @@ public class SetmealController {
      * @return
      */
     @DeleteMapping
-
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> deleteWithSetmealDish(@RequestParam List<Long> ids){
         setmealService.deleteWithSetmealDish(ids);
         return R.success("删除套餐成功！");
@@ -94,6 +95,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/list")
+    @Cacheable(value = "setmealCache",key = "#setmeal.categoryId + '_' + #setmeal.status")
     public R<List<Setmeal>> getByCategoryId(Setmeal setmeal){
         LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(setmeal.getCategoryId()!=null,Setmeal::getCategoryId,setmeal.getCategoryId());
